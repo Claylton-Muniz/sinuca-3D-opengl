@@ -1,6 +1,6 @@
 CC = gcc
 SRC = src/*.c
-EXEC = sinuca3D
+EXEC = build/sinuca3D
 
 # Detecta o sistema
 UNAME_S := $(shell uname -s)

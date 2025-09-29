@@ -38,7 +38,7 @@ void display() {
         glutSolidCube(1.0);
     glPopMatrix();
 
-    // --- Tabelas - Z ---
+    // --- Tabelas laterais ---
     glPushMatrix();
         glColor3f(0.0f, 0.5f, 0.0f);
         glScalef(12.5f, 0.7f, 0.5f);
@@ -67,7 +67,7 @@ void display() {
         glutSolidCube(1.0);
     glPopMatrix();
 
-    // --- Tabelas - X ---
+    // --- Tabelas frontais ---
     glPushMatrix();
         glColor3f(0.0f, 0.5f, 0.0f);
         glScalef(0.5f, 0.7f, 14.0f);
