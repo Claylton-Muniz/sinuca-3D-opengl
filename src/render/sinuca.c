@@ -1,4 +1,12 @@
 #include <GL/glut.h>
+#include <math.h>
+#include <stdio.h>
+
+#include "../../include/sinuca.h"
+
+#define M_PI 3.14159265358979323846
+
+float t = 0;
 
 void desenhaMesa()
 {
@@ -66,14 +74,68 @@ void desenhaBola()
     glPopMatrix();
 }
 
-void desenhaTaco()
+void desenhaTaco(float camX, float camY, float camZ)
 {
+    // Direção da câmera → origem
+    float dirX = -camX;
+    float dirY = -camY;
+    float dirZ = -camZ;
+
+    float len = sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+    dirX /= len;
+    dirY /= len;
+    dirZ /= len;
+
+    // Posição do taco
+    float tacoX = camX + dirX * 2.0f;
+    float tacoY = camY + dirY * 2.0f - 2.0f;
+    float tacoZ = camZ + dirZ * 2.0f;
+
     glPushMatrix();
     glColor3f(0.6f, 0.3f, 0.0f);
-    glTranslatef(0.0f, 1.0f, 23.0f);
-    glRotatef(180, 0, 1, 0);
+    glTranslatef(tacoX, tacoY, tacoZ);
+
+    // Alinhamento
+    float ref[3] = {0, 0, 1}; // eixo padrão do cilindro
+    float eixo[3] = {
+        ref[1] * dirZ - ref[2] * dirY,
+        ref[2] * dirX - ref[0] * dirZ,
+        ref[0] * dirY - ref[1] * dirX};
+
+    float eixoLen = sqrt(eixo[0] * eixo[0] + eixo[1] * eixo[1] + eixo[2] * eixo[2]);
+    if (eixoLen > 1e-6)
+    {
+        eixo[0] /= eixoLen;
+        eixo[1] /= eixoLen;
+        eixo[2] /= eixoLen;
+        float dot = ref[0] * dirX + ref[1] * dirY + ref[2] * dirZ;
+        float angulo = acos(dot) * 180.0 / M_PI;
+        glRotatef(angulo, eixo[0], eixo[1], eixo[2]);
+    }
+
+    if (isTacada)
+    {
+        float amplitude = 4.0f;                         // deslocamento máximo no Z
+        float frequencia = 1.5f;                        // ciclos por segundo (quanto menor, mais lento)
+        t = t + 0.016f;                                 // segundos
+
+        float deslocamento = amplitude * -sin(2 * M_PI * frequencia * t);
+
+        if (deslocamento > 3.8f)
+        {
+            deslocamento = 0;
+            isTacada = 0;
+            t = 0;
+        }
+
+        glTranslatef(0.0f, 0.0f, deslocamento); // animação do movimento do taco
+    }
+    
+
+    // Desenha cilindro
     GLUquadric *quad = gluNewQuadric();
     gluCylinder(quad, 0.1, 0.05, 11.0, 20, 20);
     gluDeleteQuadric(quad);
+
     glPopMatrix();
 }

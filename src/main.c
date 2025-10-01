@@ -6,6 +6,8 @@
 
 #define M_PI 3.14159265358979323846
 
+int isTacada = 0;
+
 float yaw = 0.0f;   // rotação horizontal da câmera
 float pitch = 0.3f; // inclinação vertical fixa
 int lastX, lastY;
@@ -58,9 +60,18 @@ void display()
 
     desenhaMesa();
     desenhaBola();
-    desenhaTaco();
+    desenhaTaco(camX, camY, camZ);
 
     glutSwapBuffers();
+}
+
+// gambiarra para atualizar o desenho dos objetos e fazer a animação do taco
+void atualiza() {
+    glutPostRedisplay();
+    if (isTacada)
+    {
+        glutTimerFunc(16, atualiza, 0); // ~60 FPS (1000ms/60 ≈ 16ms)
+    }
 }
 
 int main(int argc, char **argv)
@@ -76,6 +87,7 @@ int main(int argc, char **argv)
 
     glutDisplayFunc(display);
     glutPassiveMotionFunc(mouseMotion);
+    glutMouseFunc(mouse);
 
     glutMainLoop();
     return 0;

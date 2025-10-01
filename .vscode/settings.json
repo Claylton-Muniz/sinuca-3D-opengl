@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "glut.h": "c",
+        "sinuca.h": "c",
+        "input.h": "c"
+    }
+}

@@ -1,4 +1,5 @@
 #include <GL/glut.h>
+#include <stdio.h>
 
 #include "../../include/input.h"
 
@@ -32,4 +33,13 @@ void mouseMotion(int x, int y)
     lastY = height / 2;
 
     glutPostRedisplay();
+}
+
+void mouse(int button, int state, int x, int y)
+{
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+    {
+        isTacada = 1;
+        glutTimerFunc(0, atualiza, 0);
+    }
 }

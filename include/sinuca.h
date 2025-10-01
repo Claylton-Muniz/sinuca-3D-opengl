@@ -1,8 +1,10 @@
 #ifndef SINUCA_H
 #define SINUCA_H
 
+extern int isTacada;
+
 void desenhaMesa();
 void desenhaBola();
-void desenhaTaco();
+void desenhaTaco(float camX, float camY, float camZ);
 
 #endif
