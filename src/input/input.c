@@ -43,3 +43,11 @@ void mouse(int button, int state, int x, int y)
         glutTimerFunc(0, atualiza, 0);
     }
 }
+
+void teclado(unsigned char key, int x, int y)
+{
+    if (key == 'c' || key == 'C') {
+        cameraAtual = 1 - cameraAtual; // alterna entre 0 e 1
+        glutPostRedisplay();
+    }
+}

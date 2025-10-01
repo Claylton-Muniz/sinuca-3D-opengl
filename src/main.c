@@ -2,11 +2,12 @@
 #include <math.h>
 
 #include "../include/sinuca.h"
-#include "../include/input.h" 
+#include "../include/input.h"
 
 #define M_PI 3.14159265358979323846
 
 int isTacada = 0;
+int cameraAtual = 0;
 
 float yaw = 0.0f;   // rotação horizontal da câmera
 float pitch = 0.3f; // inclinação vertical fixa
@@ -48,25 +49,53 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    float raio = 25.0f; // modificar para usar de zoom
+    float raio = 25.0f;
     float camX = sin(yaw) * raio;
     float camZ = cos(yaw) * raio;
-    float camY = 12.0f; // altura fixa
+    float camY = 12.0f;
 
-    gluLookAt(
-        camX, camY, camZ, // posição da câmera
-        0, 0, 0,          // olha pro centro
-        0, 1, 0);
+    if (cameraAtual == 0)
+    {
+        // cam. preview
+        float raio = 25.0f;
+        float camX = sin(yaw) * raio;
+        float camZ = cos(yaw) * raio;
+        float camY = 12.0f;
+
+        gluLookAt(camX, camY, camZ,
+                  0, 0, 0,
+                  0, 1, 0);
+
+        desenhaTaco(camX, camY, camZ, 0, 0, 0);
+    }
+    else
+    {
+        // cam. jogo
+        float bolaX = 0.0f;
+        float bolaY = 0.9f;
+        float bolaZ = 10.0f;
+
+        float raio = 8.0f;
+        float camX = bolaX + sin(yaw) * raio;
+        float camY = bolaY + 5;
+        float camZ = bolaZ + cos(yaw) * raio;
+
+        gluLookAt(camX, camY, camZ,
+                  bolaX, bolaY, bolaZ,
+                  0, 1, 0);
+
+        desenhaTaco(camX, camY, camZ, bolaX, bolaY, bolaZ);
+    }
 
     desenhaMesa();
     desenhaBola();
-    desenhaTaco(camX, camY, camZ);
 
     glutSwapBuffers();
 }
 
 // gambiarra para atualizar o desenho dos objetos e fazer a animação do taco
-void atualiza() {
+void atualiza()
+{
     glutPostRedisplay();
     if (isTacada)
     {
@@ -88,6 +117,7 @@ int main(int argc, char **argv)
     glutDisplayFunc(display);
     glutPassiveMotionFunc(mouseMotion);
     glutMouseFunc(mouse);
+    glutKeyboardFunc(teclado);
 
     glutMainLoop();
     return 0;

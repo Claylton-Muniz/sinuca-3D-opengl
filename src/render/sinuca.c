@@ -74,12 +74,12 @@ void desenhaBola()
     glPopMatrix();
 }
 
-void desenhaTaco(float camX, float camY, float camZ)
+void desenhaTaco(float camX, float camY, float camZ, float alvoX, float alvoY, float alvoZ)
 {
-    // Direção da câmera → origem
-    float dirX = -camX;
-    float dirY = -camY;
-    float dirZ = -camZ;
+    // Direção da câmera → alvo
+    float dirX = alvoX - camX;
+    float dirY = alvoY - camY;
+    float dirZ = alvoZ - camZ;
 
     float len = sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
     dirX /= len;
@@ -95,8 +95,8 @@ void desenhaTaco(float camX, float camY, float camZ)
     glColor3f(0.6f, 0.3f, 0.0f);
     glTranslatef(tacoX, tacoY, tacoZ);
 
-    // Alinhamento
-    float ref[3] = {0, 0, 1}; // eixo padrão do cilindro
+    // Alinhamento do cilindro
+    float ref[3] = {0, 0, 1};
     float eixo[3] = {
         ref[1] * dirZ - ref[2] * dirY,
         ref[2] * dirX - ref[0] * dirZ,
@@ -113,29 +113,24 @@ void desenhaTaco(float camX, float camY, float camZ)
         glRotatef(angulo, eixo[0], eixo[1], eixo[2]);
     }
 
-    if (isTacada)
-    {
-        float amplitude = 4.0f;                         // deslocamento máximo no Z
-        float frequencia = 1.5f;                        // ciclos por segundo (quanto menor, mais lento)
-        t = t + 0.016f;                                 // segundos
-
+    // animação
+    if (isTacada) {
+        float amplitude = 4.0f;
+        float frequencia = 1.5f;
+        t += 0.016f;
         float deslocamento = amplitude * -sin(2 * M_PI * frequencia * t);
-
-        if (deslocamento > 3.8f)
-        {
+        if (deslocamento > 3.8f) {
             deslocamento = 0;
             isTacada = 0;
             t = 0;
         }
-
-        glTranslatef(0.0f, 0.0f, deslocamento); // animação do movimento do taco
+        glTranslatef(0.0f, 0.0f, deslocamento);
     }
-    
 
-    // Desenha cilindro
     GLUquadric *quad = gluNewQuadric();
     gluCylinder(quad, 0.1, 0.05, 11.0, 20, 20);
     gluDeleteQuadric(quad);
 
     glPopMatrix();
 }
+
