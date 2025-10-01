@@ -1,5 +1,5 @@
 CC = gcc
-SRC = src/*.c
+SRC = src/*.c src/*/*.c
 EXEC = build/sinuca3D
 
 # Detecta o sistema
