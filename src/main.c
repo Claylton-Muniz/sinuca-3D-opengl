@@ -7,7 +7,7 @@
 #define M_PI 3.14159265358979323846
 
 int isTacada = 0;
-int cameraAtual = 0;
+int cameraAtual = 1;
 
 float yaw = 0.0f;   // rotação horizontal da câmera
 float pitch = 0.3f; // inclinação vertical fixa

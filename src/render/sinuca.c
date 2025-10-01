@@ -89,11 +89,12 @@ void desenhaTaco(float camX, float camY, float camZ, float alvoX, float alvoY, f
     // Posição do taco
     float tacoX = camX + dirX * 2.0f;
     float tacoY = camY + dirY * 2.0f - 2.0f;
-    float tacoZ = camZ + dirZ * 2.0f;
+    float tacoZ = camZ + dirZ * 1.0f;
 
     glPushMatrix();
     glColor3f(0.6f, 0.3f, 0.0f);
     glTranslatef(tacoX, tacoY, tacoZ);
+    printf("x: %f y: %f z: %f\n", tacoX, tacoY, tacoZ); // testa mais depois
 
     // Alinhamento do cilindro
     float ref[3] = {0, 0, 1};
