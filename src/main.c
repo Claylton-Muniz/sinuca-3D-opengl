@@ -6,13 +6,23 @@
 
 #define M_PI 3.14159265358979323846
 
+// Câmera e animação de tacada
 int isTacada = 0;
 int cameraAtual = 0;
 
+// Movimentação do mouse
 float yaw = 0.0f;   // rotação horizontal da câmera
 float pitch = 0.3f; // inclinação vertical fixa
 int lastX, lastY;
 int width = 800, height = 450;
+
+// Pos inicial da bola
+float bolaX = 0.0f;
+float bolaY = 0.9f;
+float bolaZ = -10.0f;
+
+float bolaVX = 0.0f, bolaVZ = 0.0f; // velocidade da bola no plano XZ
+float atrito = 0.95f;               // fator de desaceleração por frame
 
 void init()
 {
@@ -60,14 +70,12 @@ void display()
         gluLookAt(camX, camY, camZ,
                   0, 0, 0,
                   0, 1, 0);
+
+        isTacada = 0; // gambiarra para fazer a animação funcionar
     }
     else
     {
         // cam. jogo
-        float bolaX = 0.0f;
-        float bolaY = 0.9f;
-        float bolaZ = 10.0f;
-
         float raio = 8.0f;
         float camX = bolaX + sin(yaw) * raio;
         float camY = bolaY + 5;
@@ -81,19 +89,9 @@ void display()
     }
 
     desenhaMesa();
-    desenhaBola();
+    desenhaBola(bolaX, bolaY, bolaZ);
 
     glutSwapBuffers();
-}
-
-// gambiarra para atualizar o desenho dos objetos e fazer a animação do taco
-void atualiza()
-{
-    glutPostRedisplay();
-    if (isTacada)
-    {
-        glutTimerFunc(16, atualiza, 0); // ~60 FPS (1000ms/60 ≈ 16ms)
-    }
 }
 
 int main(int argc, char **argv)

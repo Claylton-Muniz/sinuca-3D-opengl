@@ -65,11 +65,11 @@ void desenhaMesa()
     glPopMatrix();
 }
 
-void desenhaBola()
+void desenhaBola(float bolaX, float bolaY, float bolaZ)
 {
     glPushMatrix();
     glColor3f(1.0f, 1.0f, 1.0f);
-    glTranslatef(0.0f, 0.9f, 10.0f);
+    glTranslatef(bolaX, bolaY, bolaZ);
     glutSolidSphere(0.4f, 50, 50);
     glPopMatrix();
 }
@@ -98,6 +98,8 @@ void desenhaTaco(float camX, float camY, float camZ, float alvoX, float alvoY, f
     glPushMatrix();
     glColor3f(0.6f, 0.3f, 0.0f);
     glTranslatef(tacoX, tacoY, tacoZ);
+
+    // printf("x: %f y: %f z: %f\n", tacoX, tacoY, tacoZ);
 
     // Alinhamento do taco apontando para a bola
     float dirTacoX = alvoX - tacoX;
@@ -134,7 +136,7 @@ void desenhaTaco(float camX, float camY, float camZ, float alvoX, float alvoY, f
         float frequencia = 1.5f; // ciclos por segundo
         t = t + 0.016f;          // segundos
 
-        float deslocamento = amplitude * -sin(2 * M_PI * frequencia * t);
+        float deslocamento = amplitude * sin(2 * M_PI * frequencia * t);
 
         if (deslocamento > 1.4f)
         {

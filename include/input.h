@@ -4,6 +4,8 @@
 extern int isTacada;
 extern int cameraAtual;
 
+extern float bolaVX, bolaVZ; 
+
 extern float yaw;
 extern float pitch;
 extern int width, height;

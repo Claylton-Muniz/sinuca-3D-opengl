@@ -1,4 +1,5 @@
 #include <GL/glut.h>
+#include <math.h>
 #include <stdio.h>
 
 #include "../../include/input.h"
@@ -39,6 +40,15 @@ void mouse(int button, int state, int x, int y)
 {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
+        // direção olhando da câmera para a bola
+        float dirX = -sin(yaw);
+        float dirZ = -cos(yaw);
+
+        // velocidade inicial
+        float forca = 0.5f;
+        bolaVX = dirX * forca;
+        bolaVZ = dirZ * forca;
+
         isTacada = 1;
         glutTimerFunc(0, atualiza, 0);
     }
@@ -46,7 +56,8 @@ void mouse(int button, int state, int x, int y)
 
 void teclado(unsigned char key, int x, int y)
 {
-    if (key == 'c' || key == 'C') {
+    if (key == 'c' || key == 'C')
+    {
         cameraAtual = 1 - cameraAtual; // alterna entre 0 e 1
         glutPostRedisplay();
     }

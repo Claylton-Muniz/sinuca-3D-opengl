@@ -4,7 +4,7 @@
 extern int isTacada;
 
 void desenhaMesa();
-void desenhaBola();
+void desenhaBola(float bolaX, float bolaY, float bolaZ);
 void desenhaTaco(float camX, float camY, float camZ, float alvoX, float alvoY, float alvoZ);
 
 #endif
