@@ -7,7 +7,7 @@
 #define M_PI 3.14159265358979323846
 
 int isTacada = 0;
-int cameraAtual = 1;
+int cameraAtual = 0;
 
 float yaw = 0.0f;   // rotação horizontal da câmera
 float pitch = 0.3f; // inclinação vertical fixa
@@ -49,11 +49,6 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    float raio = 25.0f;
-    float camX = sin(yaw) * raio;
-    float camZ = cos(yaw) * raio;
-    float camY = 12.0f;
-
     if (cameraAtual == 0)
     {
         // cam. preview
@@ -65,8 +60,6 @@ void display()
         gluLookAt(camX, camY, camZ,
                   0, 0, 0,
                   0, 1, 0);
-
-        desenhaTaco(camX, camY, camZ, 0, 0, 0);
     }
     else
     {
