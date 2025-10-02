@@ -45,12 +45,15 @@ void mouse(int button, int state, int x, int y)
         float dirZ = -cos(yaw);
 
         // velocidade inicial
-        float forca = 0.5f;
-        bolaVX = dirX * forca;
-        bolaVZ = dirZ * forca;
-
-        isTacada = 1;
-        glutTimerFunc(0, atualiza, 0);
+        float forca = 27.0f;
+        if (bolaVX == 0 && bolaVZ == 0)
+        {
+            bolaVX = dirX * forca;
+            bolaVZ = dirZ * forca;
+            isTacada = 1;
+            cameraAtual = 0;
+            glutTimerFunc(0, atualiza, 0);
+        }
     }
 }
 
