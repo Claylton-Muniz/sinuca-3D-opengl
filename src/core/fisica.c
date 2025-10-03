@@ -152,16 +152,18 @@ void atualiza()
     {
         printf("Bola 2 encaçapada!\n");
         bola2VX = bola2VZ = 0;
-        bola2X = 0.5f;
-        bola2Z = 9.0f;
+        bola2X = 0.0f;
+        bola2Y = -1.0f;
+        bola2Z = 0.0f;
     }
     
     if (bolaEmCacapa(bola3X, bola3Z))
     {
         printf("Bola 3 encaçapada!\n");
         bola3VX = bola3VZ = 0;
-        bola3X = -0.5f;
-        bola3Z = 8.5f;
+        bola3X = 0.0f;
+        bola3Y = -1.0f;
+        bola3Z = 0.0f;
     }
     
     if (bolaEmCacapa(bola4X, bola4Z))
@@ -169,7 +171,8 @@ void atualiza()
         printf("Bola 4 encaçapada!\n");
         bola4VX = bola4VZ = 0;
         bola4X = 0.0f;
-        bola4Z = 8.0f;
+        bola4Y = -1.0f;
+        bola4Z = 0.0f;
     }
     
     // Colisão com as paredes (para todas as bolas)
