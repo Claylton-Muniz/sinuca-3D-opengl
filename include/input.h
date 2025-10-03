@@ -4,6 +4,7 @@
 extern int isTacada;
 extern int cameraAtual;
 
+extern float bolaX, bolaZ; // testar colisões
 extern float bolaVX, bolaVZ; 
 
 extern float yaw;

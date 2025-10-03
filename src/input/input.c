@@ -64,4 +64,33 @@ void teclado(unsigned char key, int x, int y)
         cameraAtual = 1 - cameraAtual; // alterna entre 0 e 1
         glutPostRedisplay();
     }
+    if (key == 'w' || key == 'W')
+    {
+        bolaX += 0.3f;
+        glutPostRedisplay();
+    }
+    if (key == 's' || key == 'S')
+    {
+        bolaX -= 0.3f;
+        glutPostRedisplay();
+    }
+    if (key == 'a' || key == 'A')
+    {
+        bolaZ -= 0.3f;
+        glutPostRedisplay();
+    }
+    if (key == 'd' || key == 'D')
+    {
+        bolaZ += 0.3f;
+        glutPostRedisplay();
+    }
+    if (key == 'f' || key == 'F')
+    {
+        printf("bX: %f bZ: %f\n", bolaX, bolaZ);
+    }
+    if (key == 'p' || key == 'P')
+    {
+        bolaVX = 0;
+        bolaVZ = 0;
+    }
 }
