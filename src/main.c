@@ -16,13 +16,21 @@ float pitch = 0.3f; // inclinação vertical fixa
 int lastX, lastY;
 int width = 800, height = 450;
 
-// Pos inicial da bola
+// Posições iniciais das bolas
 float bolaX = 0.0f;
 float bolaY = 0.9f;
 float bolaZ = -10.0f;
 
-float bolaVX = 0.0f, bolaVZ = 0.0f; // velocidade da bola no plano XZ
-float atrito = 0.95f;               // fator de desaceleração por frame
+// Posição inicial da bola 2
+float bola2X = 0.0f;
+float bola2Y = 0.9f;
+float bola2Z = 9.0f;
+
+// Velocidades
+float bolaVX = 0.0f, bolaVZ = 0.0f;
+float bola2VX = 0.0f, bola2VZ = 0.0f;
+
+float atrito = 0.95f;
 
 void init()
 {
@@ -92,7 +100,8 @@ void display()
     }
 
     desenhaMesa();
-    desenhaBola(bolaX, bolaY, bolaZ);
+    desenhaBola(bolaX, bolaY, bolaZ, 1.0f, 1.0f, 1.0f); // bolão
+    desenhaBola(bola2X, bola2Y, bola2Z, 1.0f, 0.0f, 0.0f); // bola 2 - vermelha
 
     glutSwapBuffers();
 }

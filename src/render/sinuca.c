@@ -65,11 +65,11 @@ void desenhaMesa()
     glPopMatrix();
 }
 
-void desenhaBola(float bolaX, float bolaY, float bolaZ)
+void desenhaBola(float x, float y, float z, float r, float g, float b)
 {
     glPushMatrix();
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glTranslatef(bolaX, bolaY, bolaZ);
+    glColor3f(r, g, b);
+    glTranslatef(x, y, z);
     glutSolidSphere(0.4f, 50, 50);
     glPopMatrix();
 }
@@ -86,7 +86,7 @@ void desenhaTaco(float camX, float camY, float camZ, float alvoX, float alvoY, f
     dirY /= len;
     float dirZ_norm = dirZ / len;
 
-    // Posição fixa do taco (sempre atrás da bola na direção da câmera)
+    // Posição fixa do taco
     float distanciaFixa = 15.0f; // distância constante da bola
     float alturaFixa = 0.9f;    // altura fixa do taco
     float offsetLateral = 0.0f; // ajuste lateral se necessário
