@@ -78,39 +78,68 @@ void colisaoBolas(float *x1, float *z1, float *vx1, float *vz1,
 
 void verificaColisaoBolas()
 {
+    // Verifica colisões entre todos os pares de bolas
     colisaoBolas(&bolaX, &bolaZ, &bolaVX, &bolaVZ, 
                  &bola2X, &bola2Z, &bola2VX, &bola2VZ);
+    
+    colisaoBolas(&bolaX, &bolaZ, &bolaVX, &bolaVZ, 
+                 &bola3X, &bola3Z, &bola3VX, &bola3VZ);
+    
+    colisaoBolas(&bolaX, &bolaZ, &bolaVX, &bolaVZ, 
+                 &bola4X, &bola4Z, &bola4VX, &bola4VZ);
+    
+    colisaoBolas(&bola2X, &bola2Z, &bola2VX, &bola2VZ, 
+                 &bola3X, &bola3Z, &bola3VX, &bola3VZ);
+    
+    colisaoBolas(&bola2X, &bola2Z, &bola2VX, &bola2VZ, 
+                 &bola4X, &bola4Z, &bola4VX, &bola4VZ);
+    
+    colisaoBolas(&bola3X, &bola3Z, &bola3VX, &bola3VZ, 
+                 &bola4X, &bola4Z, &bola4VX, &bola4VZ);
 }
 
 void atualiza()
 {
     float dt = 0.016f;
     
-    // Atualiza posição da bola 1
+    // Atualiza posição de todas as bolas
     bolaX += bolaVX * dt;
     bolaZ += bolaVZ * dt;
     
-    // Atualiza posição da bola 2
     bola2X += bola2VX * dt;
     bola2Z += bola2VZ * dt;
     
-    // Aplica atrito às duas bolas
+    bola3X += bola3VX * dt;
+    bola3Z += bola3VZ * dt;
+    
+    bola4X += bola4VX * dt;
+    bola4Z += bola4VZ * dt;
+    
+    // Aplica atrito a todas as bolas
     float atrito = 0.98f;
     bolaVX *= pow(atrito, dt * 60);
     bolaVZ *= pow(atrito, dt * 60);
     bola2VX *= pow(atrito, dt * 60);
     bola2VZ *= pow(atrito, dt * 60);
+    bola3VX *= pow(atrito, dt * 60);
+    bola3VZ *= pow(atrito, dt * 60);
+    bola4VX *= pow(atrito, dt * 60);
+    bola4VZ *= pow(atrito, dt * 60);
     
     // Para as bolas se a velocidade for muito baixa
     if (fabs(bolaVX) < 0.001f) bolaVX = 0;
     if (fabs(bolaVZ) < 0.001f) bolaVZ = 0;
     if (fabs(bola2VX) < 0.001f) bola2VX = 0;
     if (fabs(bola2VZ) < 0.001f) bola2VZ = 0;
+    if (fabs(bola3VX) < 0.001f) bola3VX = 0;
+    if (fabs(bola3VZ) < 0.001f) bola3VZ = 0;
+    if (fabs(bola4VX) < 0.001f) bola4VX = 0;
+    if (fabs(bola4VZ) < 0.001f) bola4VZ = 0;
     
-    // Verifica colisão entre bolas
+    // Verifica colisão entre todas as bolas
     verificaColisaoBolas();
     
-    // Checar caçapas para ambas as bolas
+    // Checar caçapas para todas as bolas
     if (bolaEmCacapa(bolaX, bolaZ))
     {
         printf("Bolão encaçapada!\n");
@@ -123,12 +152,27 @@ void atualiza()
     {
         printf("Bola 2 encaçapada!\n");
         bola2VX = bola2VZ = 0;
-        bola2X = 0.0f;
-        bola2Y = -1.0f;
-        bola2Z = 0.0f;
+        bola2X = 0.5f;
+        bola2Z = 9.0f;
     }
     
-    // Colisão com as paredes (para ambas as bolas)
+    if (bolaEmCacapa(bola3X, bola3Z))
+    {
+        printf("Bola 3 encaçapada!\n");
+        bola3VX = bola3VZ = 0;
+        bola3X = -0.5f;
+        bola3Z = 8.5f;
+    }
+    
+    if (bolaEmCacapa(bola4X, bola4Z))
+    {
+        printf("Bola 4 encaçapada!\n");
+        bola4VX = bola4VZ = 0;
+        bola4X = 0.0f;
+        bola4Z = 8.0f;
+    }
+    
+    // Colisão com as paredes (para todas as bolas)
     float minX = -8.0f + 0.4f;
     float maxX = 8.0f - 0.4f;
     float minZ = -14.0f + 0.4f;
@@ -152,8 +196,28 @@ void atualiza()
         if (bola2Z > maxZ) { bola2Z = maxZ; bola2VZ = -bola2VZ; }
     }
     
+    // Para bola 3
+    if (bola3Z < -0.11f || bola3Z > 0.18f)
+    {
+        if (bola3X < minX) { bola3X = minX; bola3VX = -bola3VX; }
+        if (bola3X > maxX) { bola3X = maxX; bola3VX = -bola3VX; }
+        if (bola3Z < minZ) { bola3Z = minZ; bola3VZ = -bola3VZ; }
+        if (bola3Z > maxZ) { bola3Z = maxZ; bola3VZ = -bola3VZ; }
+    }
+    
+    // Para bola 4
+    if (bola4Z < -0.11f || bola4Z > 0.18f)
+    {
+        if (bola4X < minX) { bola4X = minX; bola4VX = -bola4VX; }
+        if (bola4X > maxX) { bola4X = maxX; bola4VX = -bola4VX; }
+        if (bola4Z < minZ) { bola4Z = minZ; bola4VZ = -bola4VZ; }
+        if (bola4Z > maxZ) { bola4Z = maxZ; bola4VZ = -bola4VZ; }
+    }
+    
     glutPostRedisplay();
     if (fabs(bolaVX) > 0.001f || fabs(bolaVZ) > 0.001f || 
-        fabs(bola2VX) > 0.001f || fabs(bola2VZ) > 0.001f)
+        fabs(bola2VX) > 0.001f || fabs(bola2VZ) > 0.001f ||
+        fabs(bola3VX) > 0.001f || fabs(bola3VZ) > 0.001f ||
+        fabs(bola4VX) > 0.001f || fabs(bola4VZ) > 0.001f)
         glutTimerFunc(16, atualiza, 0);
 }

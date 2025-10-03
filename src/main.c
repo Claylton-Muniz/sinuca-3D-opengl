@@ -22,13 +22,25 @@ float bolaY = 0.9f;
 float bolaZ = -10.0f;
 
 // Posição inicial da bola 2
-float bola2X = 0.0f;
+float bola2X = 0.5f;  // Modificado para não sobrepor
 float bola2Y = 0.9f;
-float bola2Z = 9.0f;
+float bola2Z = 8.75f;
+
+// Posição inicial da bola 3
+float bola3X = -0.5f;
+float bola3Y = 0.9f;
+float bola3Z = 8.75f;
+
+// Posição inicial da bola 4
+float bola4X = 0.0f;
+float bola4Y = 0.9f;
+float bola4Z = 8.1f;
 
 // Velocidades
 float bolaVX = 0.0f, bolaVZ = 0.0f;
 float bola2VX = 0.0f, bola2VZ = 0.0f;
+float bola3VX = 0.0f, bola3VZ = 0.0f;
+float bola4VX = 0.0f, bola4VZ = 0.0f;
 
 float atrito = 0.95f;
 
@@ -102,6 +114,8 @@ void display()
     desenhaMesa();
     desenhaBola(bolaX, bolaY, bolaZ, 1.0f, 1.0f, 1.0f); // bolão
     desenhaBola(bola2X, bola2Y, bola2Z, 1.0f, 0.0f, 0.0f); // bola 2 - vermelha
+    desenhaBola(bola3X, bola3Y, bola3Z, 0.0f, 1.0f, 0.0f); // bola 3 - verde
+    desenhaBola(bola4X, bola4Y, bola4Z, 0.0f, 0.0f, 1.0f); // bola 4 - azul
 
     glutSwapBuffers();
 }
