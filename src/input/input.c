@@ -45,7 +45,7 @@ void mouse(int button, int state, int x, int y)
         float dirZ = -cos(yaw);
 
         // velocidade inicial
-        float forca = 27.0f;
+        float forca = 40.0f;
         if (bolaVX == 0 && bolaVZ == 0)
         {
             bolaVX = dirX * forca;

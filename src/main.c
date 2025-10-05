@@ -22,7 +22,7 @@ float bolaY = 0.9f;
 float bolaZ = -10.0f;
 
 // Posição inicial da bola 2
-float bola2X = 0.5f;  // Modificado para não sobrepor
+float bola2X = 0.5f; // Modificado para não sobrepor
 float bola2Y = 0.9f;
 float bola2Z = 8.75f;
 
@@ -54,6 +54,14 @@ void init()
 
     GLfloat light_pos[] = {2.0f, 5.0f, 5.0f, 1.0f};
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+
+    GLfloat light_specular[] = {0.5f, 0.5f, 0.5f, 1.0f}; // Cor do brilho (branco)
+    GLfloat mat_specular[] = {0.2f, 0.2f, 0.2f, 1.0f};  // Material com brilho
+    GLfloat shininess[] = {2.5f};                      // Intensidade do brilho
+
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular); // Luz com componente especular
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular); // Material com componente especular
+    glMaterialfv(GL_FRONT, GL_SHININESS, shininess);   // Define o "brilho"
 
     GLfloat mat_diffuse[] = {0.2f, 0.6f, 1.0f, 1.0f};
     glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
@@ -112,7 +120,7 @@ void display()
     }
 
     desenhaMesa();
-    desenhaBola(bolaX, bolaY, bolaZ, 1.0f, 1.0f, 1.0f); // bolão
+    desenhaBola(bolaX, bolaY, bolaZ, 1.0f, 1.0f, 1.0f);    // bolão
     desenhaBola(bola2X, bola2Y, bola2Z, 1.0f, 0.0f, 0.0f); // bola 2 - vermelha
     desenhaBola(bola3X, bola3Y, bola3Z, 0.0f, 1.0f, 0.0f); // bola 3 - verde
     desenhaBola(bola4X, bola4Y, bola4Z, 0.0f, 0.0f, 1.0f); // bola 4 - azul
