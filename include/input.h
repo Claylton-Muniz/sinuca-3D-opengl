@@ -7,6 +7,8 @@ extern int cameraAtual;
 extern float bolaX, bolaZ; // testar colisões
 extern float bolaVX, bolaVZ; 
 
+extern float bolaX, bolaY, bolaZ, bola2X, bola2Y, bola2Z, bola3X, bola3Y, bola3Z, bola4X, bola4Y, bola4Z;
+
 extern float yaw;
 extern float pitch;
 extern int width, height;
