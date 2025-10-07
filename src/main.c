@@ -56,9 +56,11 @@ void init()
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
 
     GLfloat light_specular[] = {0.5f, 0.5f, 0.5f, 1.0f}; // Cor do brilho (branco)
-    GLfloat mat_specular[] = {0.2f, 0.2f, 0.2f, 1.0f};  // Material com brilho
-    GLfloat shininess[] = {2.5f};                      // Intensidade do brilho
+    GLfloat mat_specular[] = {0.2f, 0.2f, 0.2f, 1.0f};   // Material com brilho
+    GLfloat shininess[] = {2.5f};                        // Intensidade do brilho
+    GLfloat black[] = {0.1f, 0.1f, 0.1f, 1.0f};            // Cinza escuro
 
+    glLightfv(GL_LIGHT0, GL_AMBIENT, black);           // Luz ambiete fraca
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular); // Luz com componente especular
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular); // Material com componente especular
     glMaterialfv(GL_FRONT, GL_SHININESS, shininess);   // Define o "brilho"
