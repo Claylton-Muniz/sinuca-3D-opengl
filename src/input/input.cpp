@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "../../include/input.h"
+#include "../../include/fisica.h"
 
 float forca = 40.0f;
 

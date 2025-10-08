@@ -1,6 +1,13 @@
 #include <GL/glut.h>
 #include <math.h>
 
+#include <iostream>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
+#include <SOIL/SOIL.h> // Biblioteca para carregar texturas
+
 #include "../include/sinuca.h"
 #include "../include/input.h"
 
@@ -44,6 +51,12 @@ float bola4VX = 0.0f, bola4VZ = 0.0f;
 
 float atrito = 0.95f;
 
+GLuint texturaBolaBranca = 0;
+int texturaCarregada = 0;
+
+Assimp::Importer importer;
+const aiScene *scene = nullptr;
+
 void init()
 {
     glClearColor(1, 1, 1, 0);
@@ -58,9 +71,7 @@ void init()
     GLfloat light_specular[] = {0.5f, 0.5f, 0.5f, 1.0f}; // Cor do brilho (branco)
     GLfloat mat_specular[] = {0.2f, 0.2f, 0.2f, 1.0f};   // Material com brilho
     GLfloat shininess[] = {2.5f};                        // Intensidade do brilho
-    GLfloat black[] = {0.1f, 0.1f, 0.1f, 1.0f};            // Cinza escuro
 
-    glLightfv(GL_LIGHT0, GL_AMBIENT, black);           // Luz ambiete fraca
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular); // Luz com componente especular
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular); // Material com componente especular
     glMaterialfv(GL_FRONT, GL_SHININESS, shininess);   // Define o "brilho"
@@ -82,6 +93,76 @@ void init()
     lastX = width / 2;
     lastY = height / 2;
     glutWarpPointer(lastX, lastY);
+
+    scene = importer.ReadFile("assets/models/room/EmptyRoom.obj",
+                              aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
+
+    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+    {
+        std::cerr << "Erro ao carregar modelo: " << importer.GetErrorString() << std::endl;
+        exit(1);
+    }
+
+    texturaBolaBranca = SOIL_load_OGL_texture(
+        "assets/dindin/dindinzinho.jpg", // caminho para sua textura
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+
+    if (texturaBolaBranca == 0)
+    {
+        std::cerr << "Erro ao carregar textura: " << SOIL_last_result() << std::endl;
+    }
+    else
+    {
+        texturaCarregada = 1;
+        glBindTexture(GL_TEXTURE_2D, texturaBolaBranca);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }
+}
+
+void drawMesh(const aiMesh *mesh)
+{
+    glBegin(GL_TRIANGLES);
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+    {
+        const aiFace &face = mesh->mFaces[i];
+        for (unsigned int j = 0; j < face.mNumIndices; j++)
+        {
+            unsigned int index = face.mIndices[j];
+
+            if (mesh->HasNormals())
+            {
+                glNormal3fv(&mesh->mNormals[index].x);
+            }
+
+            if (mesh->HasTextureCoords(0))
+            {
+                glTexCoord2f(mesh->mTextureCoords[0][index].x,
+                             mesh->mTextureCoords[0][index].y);
+            }
+
+            glVertex3fv(&mesh->mVertices[index].x);
+        }
+    }
+    glEnd();
+}
+
+void drawNode(const aiNode *node, const aiScene *scene)
+{
+    for (unsigned int i = 0; i < node->mNumMeshes; i++)
+    {
+        const aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+        drawMesh(mesh);
+    }
+
+    for (unsigned int i = 0; i < node->mNumChildren; i++)
+    {
+        drawNode(node->mChildren[i], scene);
+    }
 }
 
 void display()
@@ -121,8 +202,18 @@ void display()
         desenhaTaco(camX, camY, camZ, bolaX, bolaY, bolaZ);
     }
 
+    glPushMatrix();
+    glTranslatef(0.0f, -8.0f, 0.0f);
+    glScalef(8.0f, 8.0f, 8.0f);
+    glColor3f(0.0f, 0.0f, 1.0f);
+    drawNode(scene->mRootNode, scene);
+    glPopMatrix();
+
     desenhaMesa();
-    desenhaBola(bolaX, bolaY, bolaZ, 1.0f, 1.0f, 1.0f);    // bolão
+    
+    // Bolão com textura
+    desenhaBolaTexturizada(bolaX, bolaY, bolaZ, texturaBolaBranca, texturaCarregada);
+
     desenhaBola(bola2X, bola2Y, bola2Z, 1.0f, 0.0f, 0.0f); // bola 2 - vermelha
     desenhaBola(bola3X, bola3Y, bola3Z, 0.0f, 1.0f, 0.0f); // bola 3 - verde
     desenhaBola(bola4X, bola4Y, bola4Z, 0.0f, 0.0f, 1.0f); // bola 4 - azul

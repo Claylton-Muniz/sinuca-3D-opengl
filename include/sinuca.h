@@ -17,6 +17,8 @@ extern int width, height;
 
 // Funções
 void desenhaMesa();
+void desenhaBolaTexturizada(float x, float y, float z, GLuint textura, int texturaCarregada);
+void desenhaEsferaTexturizada(GLuint textura, int texturaCarregada);
 void desenhaBola(float x, float y, float z, float r, float g, float b);
 void desenhaTaco(float camX, float camY, float camZ, float alvoX, float alvoY, float alvoZ);
 int bolaEmCacapa(float bx, float bz);

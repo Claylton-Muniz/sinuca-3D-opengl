@@ -1,12 +1,39 @@
 #include <GL/glut.h>
 #include <math.h>
 #include <stdio.h>
+#include <SOIL/SOIL.h>
 
 #include "../../include/sinuca.h"
 
 #define M_PI 3.14159265358979323846
 
 float t = 0;
+
+void desenhaEsferaTexturizada(GLuint textura, int texturaCarregada) {
+    GLUquadric* quad = gluNewQuadric();
+    
+    if(texturaCarregada) {
+        gluQuadricTexture(quad, GL_TRUE);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, textura);
+    }
+    
+    gluSphere(quad, 0.4f, 50, 50);
+    
+    if(texturaCarregada) {
+        glDisable(GL_TEXTURE_2D);
+    }
+    
+    gluDeleteQuadric(quad);
+}
+
+void desenhaBolaTexturizada(float x, float y, float z, GLuint textura, int texturaCarregada) {
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 1.0f); // Cor branca para a bola
+    glTranslatef(x, y, z);
+    desenhaEsferaTexturizada(textura, texturaCarregada);
+    glPopMatrix();
+}
 
 void desenhaMesa()
 {
