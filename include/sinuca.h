@@ -4,6 +4,7 @@
 // Variáveis da bola 1 (bolão)
 extern float bolaX, bolaY, bolaZ;
 extern float bolaVX, bolaVZ;
+extern GLuint textureID; // ID da textura
 
 // Variáveis da bola 2
 extern float bola2X, bola2Y, bola2Z;

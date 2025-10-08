@@ -6,11 +6,15 @@ EXEC = build/sinuca3D
 UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S), Linux)
-    FLAGS = -lGL -lGLU -lglut -lm
+	FLAGS = -lGL -lGLU -lglut -lm
+else
+ifeq ($(UNAME_S), Darwin)
+	# Flags para macOS (Darwin)
+	FLAGS = -framework OpenGL -lglut -lm
+else
+	# Assume que é Windows ou outro sistema que precise destas libs
+	FLAGS = -lopengl32 -lglu32 -lfreeglut -lm -IC:\SOIL2-master\src\SOIL2 -LC:\SOIL2-master\src\SOIL2 -lSOIL2
 endif
-
-ifeq ($(OS), Windows_NT)
-    FLAGS = -lopengl32 -lglu32 -lfreeglut -lm
 endif
 
 all:

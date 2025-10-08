@@ -67,11 +67,22 @@ void desenhaMesa()
 
 void desenhaBola(float x, float y, float z, float r, float g, float b)
 {
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textureID); // Vincula a textura    
+
     glPushMatrix();
     glColor3f(r, g, b);
     glTranslatef(x, y, z);
-    glutSolidSphere(0.4f, 50, 50);
+
+    GLUquadric *quad = gluNewQuadric();
+    gluQuadricTexture(quad, GL_TRUE); // Habilita mapeamento de textura
+    gluSphere(quad, 0.4f, 50, 50);
+    gluDeleteQuadric(quad);
+
+    //glutSolidSphere(0.4f, 50, 50);
     glPopMatrix();
+
+    glDisable(GL_TEXTURE_2D);
 }
 
 void desenhaTaco(float camX, float camY, float camZ, float alvoX, float alvoY, float alvoZ)

@@ -1,8 +1,10 @@
 #include <GL/glut.h>
 #include <math.h>
+#include <stdio.h>
 
 #include "../include/sinuca.h"
 #include "../include/input.h"
+#include "../include/SOIL2.h"
 
 #define M_PI 3.14159265358979323846
 
@@ -44,6 +46,8 @@ float bola4VX = 0.0f, bola4VZ = 0.0f;
 
 float atrito = 0.95f;
 
+GLuint textureID; // ID da textura
+
 void init()
 {
     glClearColor(1, 1, 1, 0);
@@ -80,6 +84,22 @@ void init()
     lastX = width / 2;
     lastY = height / 2;
     glutWarpPointer(lastX, lastY);
+
+}
+
+void loadTexture(const char* filename){
+    textureID = SOIL_load_OGL_texture(
+        filename,
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+    );
+    if (textureID == 0) {
+        printf("Erro ao carregar a textura: %s\n", SOIL_last_result());
+    }
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 void display()
@@ -138,6 +158,7 @@ int main(int argc, char **argv)
     glutCreateWindow("Sinuca 3D");
 
     init();
+    loadTexture("../dindinzinho.jpg");
 
     glutDisplayFunc(display);
     glutPassiveMotionFunc(mouseMotion);
